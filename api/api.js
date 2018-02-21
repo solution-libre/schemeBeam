@@ -7,6 +7,14 @@ module.exports = function(app, connection) {
 
 var ensureAuthenticated = require('../authentication/auth.js')(app);
 
+
+
+    //app.use(cookieParser());
+    //{
+    //    secret: adminConfig.passportSecret
+    //}));
+
+
     //add email address to database, create a verification code, and send verification link to email address
     app.post('/api/v1/newemail', function(req, res) {
         // regex on both client and server side for protection in case JS is augmented
@@ -32,7 +40,6 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
                         var to = new helper.Email(req.body.email);
                         var subject = settingsConfig.subjectLine;
                         var emailTemplate = require('../config/email_template.js')(
-                            req.protocol,
                             req.body.domain,
                             hashCode, 
                             settingsConfig.brandColor, 
@@ -41,7 +48,8 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
                             settingsConfig.senderAddress,
                             settingsConfig.emailHeader,
                             settingsConfig.footerName,
-                            settingsConfig.footerLocation
+                            settingsConfig.footerLocation,
+			    settingsConfig.referralType
                             );
                         var content = new helper.Content(
                                 "text/html", emailTemplate);
@@ -140,7 +148,6 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
         var to = new helper.Email(req.body.email);
         var subject = settingsConfig.subjectLine;
         var emailTemplate = require('../config/email_template.js')(
-            req.protocol,
             req.body.domain,
             hashCode, 
             settingsConfig.brandColor, 
@@ -149,7 +156,8 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
             settingsConfig.senderAddress,
             settingsConfig.emailHeader,
             settingsConfig.footerName,
-            settingsConfig.footerLocation
+            settingsConfig.footerLocation,
+            settingsConfig.referralType
             );
         var content = new helper.Content(
                 "text/html", emailTemplate);
@@ -229,5 +237,37 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
             res.json(rows);
        });
     });
+
+    app.get('/l/:hashcode', function(req, res) {
+        var hashCode = req.param('hashcode');    
+	var referralcode;
+        var verified;
+        var emailaddress;
+                	
+        connection.query('SELECT emailaddress, verified, referralcode FROM emails WHERE `referralcode`=(?)',[hashCode], function(err, rows, fields) 
+	{
+            if(err) throw err;
+            if(rows.length !== 0) 
+	    {
+		referralcode = rows[0].referredby;
+                verified = rows[0].verified;
+                emailaddress = rows[0].emailaddress;
+                
+		// Count only for verifed addresses and if cookie is not set
+                if (!req.cookies.schemebeam && verified === "true")
+	        {
+                    connection.query('UPDATE emails SET referrals = referrals + 1 WHERE `emailaddress`=(?)',[emailaddress], function(err, rows, fields){
+                        if(err) throw err;
+                    });
+	        }
+            } 
+        });
+
+	res.cookie('schemebeam', referralcode, { maxAge: 900000, httpOnly: true });
+
+	// Redirect to the link to discover    
+        res.writeHead(302, {Location: settingsConfig.redirectURL});
+	res.end();
+    })
 
 }

@@ -12,7 +12,8 @@ module.exports = function(app, connection) {
             settingsConfig.senderAddress,
             settingsConfig.emailHeader,
             settingsConfig.footerName,
-            settingsConfig.footerLocation
+            settingsConfig.footerLocation,
+	    settingsConfig.referralType
             );
         res.send(emailTemplate);
     });

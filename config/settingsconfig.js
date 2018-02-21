@@ -20,5 +20,9 @@ module.exports = {
 //First line of the footer. Put in your business name or whatever you feel is appropriate
   "footerName": "schemeBeam",
 //Second line of the footer. Put in your business location or whatever you feel is appropriate
-  "footerLocation": "Phoenix, AZ"
+  "footerLocation": "Phoenix, AZ",
+// # : default behaviour ; l : use the referral link as redirection, counting when someone uses the link
+  "referralType": "#",
+// redirect URL when l is used as referralType
+  "redirectURL": "http://www.schemebeam.com/"
 }
