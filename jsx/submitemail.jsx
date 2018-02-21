@@ -137,8 +137,8 @@ export class Thanks extends React.Component {
     render() {
         return(
             <div>
-                <div className="headerTitle">Thanks!</div>
-                <div className="secondaryHeader">Check your email for your referral link, and make sure you verify the link before you start sharing!</div>
+                <div className="headerTitle">{__('Thanks!')}</div>
+                <div className="secondaryHeader">{__('Check your email for your referral link, and make sure you verify the link before you start sharing!')}</div>
             </div>
         )
     }
