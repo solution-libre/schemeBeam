@@ -26,11 +26,11 @@ class Stats extends React.Component {
     prizeRange() {
         if( this.state.rank <= settings.prizeRange){
             return (
-                 <div className="secondaryHeader">Congratulations, you're in the top {settings.prizeRange}, with a total of <b>{this.state.referrals} referrals!</b> Other participants can still push you out of your spot, so the more referrals you can get the better!</div>
+                 <div className="secondaryHeader">{__('Congratulations, you\'re in the top')} {settings.prizeRange}, {__('with a total of')} <b>{this.state.referrals} {__('referrals!')}</b> {__('Other participants can still push you out of your spot, so the more referrals you can get the better!')}</div>
             )
         } else {
             return (
-            <div className="secondaryHeader">Sorry, with {this.state.referrals}, you're not in the top {settings.prizeRange} contestants. Get more referrals to improve your ranking!</div>
+            <div className="secondaryHeader">{__('Sorry, with')} {this.state.referrals}, {__('you\'re not in the top')} {settings.prizeRange} {__('contestants. Get more referrals to improve your ranking!')}</div>
             )
         }
     };
@@ -41,7 +41,7 @@ class Stats extends React.Component {
         var referralLinkEncoded = encodeURIComponent(referralLink);
         return(
             <div className="headerBox">
-                <div className="headerTitle">Your rank is #{this.state.rank}</div>
+                <div className="headerTitle">{__('Your rank is')} #{this.state.rank}</div>
                 {this.prizeRange()}
                 <Sharebox hashCode={this.state.hashCode} />
             </div>
