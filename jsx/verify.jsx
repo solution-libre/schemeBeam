@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import * as settings from '../config/settingsconfig.js'; 
 
 
 export class Sharebox extends React.Component {
@@ -10,7 +11,7 @@ export class Sharebox extends React.Component {
         };
     }
     render(){
-        var referralLink = window.location.hostname + "/#/" + this.props.hashCode;
+        var referralLink = window.location.hostname + "/" + settings.referralType + "/" + this.props.hashCode;
         var referralLink = referralLink.toString();
         var referralLinkEncoded = encodeURIComponent(referralLink);
         return(
