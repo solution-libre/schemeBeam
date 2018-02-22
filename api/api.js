@@ -40,6 +40,7 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
                         var to = new helper.Email(req.body.email);
                         var subject = settingsConfig.subjectLine;
                         var emailTemplate = require('../config/email_template.js')(
+                            req.protocol,
                             req.body.domain,
                             hashCode, 
                             settingsConfig.brandColor, 
@@ -148,6 +149,7 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
         var to = new helper.Email(req.body.email);
         var subject = settingsConfig.subjectLine;
         var emailTemplate = require('../config/email_template.js')(
+            req.protocol,
             req.body.domain,
             hashCode, 
             settingsConfig.brandColor, 
