@@ -14,6 +14,10 @@ i18n.configure({
   directory: __dirname + '/locales'
 });
 
+if (adminConfig.proxy) {
+  app.set('trust proxy', ['loopback', 'linklocal', 'uniquelocal']);
+}
+
 //database configuration
 var mysql = require('mysql');
 var connection = mysql.createConnection({
