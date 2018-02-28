@@ -20,6 +20,7 @@
 --
 
 DROP TABLE IF EXISTS `emails`;
+DROP TABLE IF EXISTS `logs`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!40101 SET character_set_client = utf8 */;
 CREATE TABLE `emails` (
@@ -33,7 +34,7 @@ CREATE TABLE `emails` (
   `referredby` varchar(45) DEFAULT NULL,
   PRIMARY KEY (`idemails`),
   UNIQUE KEY `emailaddress_UNIQUE` (`emailaddress`)
-) ENGINE=InnoDB AUTO_INCREMENT=245 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -44,6 +45,24 @@ LOCK TABLES `emails` WRITE;
 /*!40000 ALTER TABLE `emails` DISABLE KEYS */;
 /*!40000 ALTER TABLE `emails` ENABLE KEYS */;
 UNLOCK TABLES;
+
+CREATE TABLE `logs` (
+  `idlogs` int(11) NOT NULL AUTO_INCREMENT,
+  `idemails` int(11) DEFAULT NULL,
+  `datetime` datetime DEFAULT CURRENT_TIMESTAMP,
+  `host` varchar(200) DEFAULT NULL,
+  `ip` varchar(200) DEFAULT NULL,
+  `useragent` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`idlogs`)
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+
+LOCK TABLES `logs` WRITE;
+/*!40000 ALTER TABLE `logs` DISABLE KEYS */;
+/*!40000 ALTER TABLE `logs` ENABLE KEYS */;
+UNLOCK TABLES;
+
+
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;

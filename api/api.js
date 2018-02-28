@@ -246,11 +246,12 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
         var verified;
         var emailaddress;
                 	
-        connection.query('SELECT emailaddress, verified, referralcode FROM emails WHERE `referralcode`=(?)',[hashCode], function(err, rows, fields) 
+        connection.query('SELECT idemails, emailaddress, verified, referralcode FROM emails WHERE `referralcode`=(?)',[hashCode], function(err, rows, fields) 
 	{
             if(err) throw err;
             if(rows.length !== 0) 
 	    {
+		idemails= rows[0].idemails
 		referralcode = rows[0].referredby;
                 verified = rows[0].verified;
                 emailaddress = rows[0].emailaddress;
@@ -259,6 +260,10 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
                 if (!req.cookies.schemebeam && verified === "true")
 	        {
                     connection.query('UPDATE emails SET referrals = referrals + 1 WHERE `emailaddress`=(?)',[emailaddress], function(err, rows, fields){
+                        if(err) throw err;
+                    });
+		
+	            connection.query('INSERT INTO logs (idemails, host, ip, useragent) VALUES (?, ?, ?, ?)',[idemails, req.hostname, req.ip, req.headers['user-agent']], function(err, rows, fields){
                         if(err) throw err;
                     });
 	        }
@@ -271,5 +276,4 @@ var ensureAuthenticated = require('../authentication/auth.js')(app);
         res.writeHead(302, {Location: settingsConfig.redirectURL});
 	res.end();
     })
-
 }
