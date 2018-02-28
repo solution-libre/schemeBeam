@@ -5,6 +5,8 @@ module.exports = {
   "port": 80,
   //Enable if your app is behind a proxy
   "proxy": false,
+  //Force HTTPs redirection
+  "https_redirect": false,
   //Your personal SendGrid API key. 
   "SENDGRID_API_KEY": "your_api_key_here",
   //The id of the list you would like your client emails to (a number, can be found at the end the url path of your list)
